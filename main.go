@@ -48,6 +48,7 @@ func main() {
     // Make sure something was done
     if !did_something {
       w.WriteHeader(http.StatusInternalServerError)
+      w.Write([]byte("error"))
     }
 
   })

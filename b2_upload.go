@@ -29,7 +29,7 @@ func upload_file(UAUTH string, UURL string, PATH string, content_type string, fi
     ans = true
   }
 
-  if resp.StatusCode >= 199 || resp.StatusCode >= 300 {
+  if resp.StatusCode <= 199 || resp.StatusCode >= 300 {
     ans = true
   }
 
