@@ -21,11 +21,15 @@ func upload_file(UAUTH string, UURL string, PATH string, content_type string, fi
   req.Header.Add("Content-Type", content_type)
   req.Header.Add("X-Bz-Content-Sha1", sumString)
   req.Header.Add("X-Bz-Info-Author", "unknown")
-  _, err := client.Do(req)
+  resp, err := client.Do(req)
 
   ans := false
 
   if err != nil {
+    ans = true
+  }
+
+  if resp.StatusCode >= 199 && resp.StatusCode <= 300 {
     ans = true
   }
 
