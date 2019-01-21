@@ -6,7 +6,7 @@ import "net/http"
 import "crypto/sha1"
 import "encoding/hex"
 
-func upload_file(UAUTH string, UURL string, PATH string, content_type string, file []byte, bucket string) {
+func upload_file(UAUTH string, UURL string, PATH string, content_type string, file []byte, bucket string) (bool) {
 
   // Sum the file data
   sum := sha1.New()
@@ -21,5 +21,13 @@ func upload_file(UAUTH string, UURL string, PATH string, content_type string, fi
   req.Header.Add("Content-Type", content_type)
   req.Header.Add("X-Bz-Content-Sha1", sumString)
   req.Header.Add("X-Bz-Info-Author", "unknown")
-  client.Do(req)
+  _, err := client.Do(req)
+
+  ans := false
+
+  if err != nil {
+    ans = true
+  }
+
+  return ans
 }

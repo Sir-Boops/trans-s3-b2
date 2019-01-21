@@ -24,9 +24,13 @@ func main() {
     if r.Method == "PUT" {
       content_type := r.Header["Content-Type"][0]
       UAUTH, UURL := upload_url(BucketID, API_URL, AUTH)
-      upload_file(UAUTH, UURL, path, content_type, bodyBytes, os.Args[3])
-      fmt.Println("Uploaded: " + path)
-      did_something = true
+      status := upload_file(UAUTH, UURL, path, content_type, bodyBytes, os.Args[3])
+      if !status {
+        fmt.Println("Uploaded: " + path)
+        did_something = true
+      } else {
+        fmt.Println("Error uploading: " + path)
+      }
     }
 
     // Delete a file
