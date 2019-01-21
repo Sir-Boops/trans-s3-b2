@@ -10,6 +10,7 @@ func main() {
   // Arg 1 = ID
   // Arg 2 = Key
   // Arg 3 = bucket
+  // Arg 4 is IP
 
   BucketID, API_URL, AUTH := get_keys(os.Args[1], os.Args[2])
 
@@ -22,6 +23,6 @@ func main() {
     fmt.Println("Uploaded: " + path)
   })
 
-  http.ListenAndServe("172.17.0.1:9000", nil)
+  http.ListenAndServe(os.Args[4] + ":9000", nil)
 
 }
