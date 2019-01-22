@@ -44,6 +44,11 @@ func main() {
       }
     }
 
+    // Send an empty HEAD
+    if r.Method == "HEAD" {
+      fmt.Println("Gave some empty HEAD")
+    }
+
   })
 
   http.ListenAndServe(os.Args[4] + ":9000", nil)
