@@ -25,7 +25,8 @@ func main() {
       content_type := r.Header["Content-Type"][0]
       UAUTH, UURL := upload_url(BucketID, API_URL, AUTH)
       status := upload_file(UAUTH, UURL, path, content_type, bodyBytes, os.Args[3])
-      if !status {
+
+      if status == 200 {
         fmt.Println("Uploaded: " + path)
         did_something = true
       } else {
