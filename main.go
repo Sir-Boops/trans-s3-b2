@@ -12,7 +12,7 @@ func main() {
   // Arg 3 = bucket
   // Arg 4 is IP
 
-  BucketID, API_URL, AUTH, DL_URL := get_keys(os.Args[1], os.Args[2])
+  BucketID, API_URL, AUTH := get_keys(os.Args[1], os.Args[2])
 
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     bodyBytes, _ := ioutil.ReadAll(r.Body)
@@ -34,9 +34,9 @@ func main() {
 
     // Delete a file
     if r.Method == "DELETE" {
-      status := rm_file(AUTH, DL_URL, path)
+      status := rm_file(AUTH, API_URL, path, BucketID, os.Args[3])
 
-      if status == 200 {
+      if status == 200 || status == 400 || status == 404 {
         fmt.Println("Deleted: " + path)
       } else {
         fmt.Println("Failed to delete: " + path)

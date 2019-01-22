@@ -16,7 +16,7 @@ type Base struct {
   DLURL string `json:"downloadUrl"`
 }
 
-func get_keys(id string, key string) (string, string, string, string) {
+func get_keys(id string, key string) (string, string, string) {
 
   // Create custom client
   client := &http.Client{}
@@ -29,6 +29,6 @@ func get_keys(id string, key string) (string, string, string, string) {
   var ans Base
   json.Unmarshal([]byte(bodyString), &ans)
 
-  return ans.Allowed.BucketID, ans.API_URL, ans.AUTH, ans.DLURL
+  return ans.Allowed.BucketID, ans.API_URL, ans.AUTH
 
 }
