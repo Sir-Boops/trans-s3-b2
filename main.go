@@ -14,8 +14,6 @@ func main() {
 
   BucketID, API_URL, AUTH, DL_URL := get_keys(os.Args[1], os.Args[2])
 
-  did_something := false
-
   http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     bodyBytes, _ := ioutil.ReadAll(r.Body)
     path := r.URL.String()
@@ -28,9 +26,9 @@ func main() {
 
       if status == 200 {
         fmt.Println("Uploaded: " + path)
-        did_something = true
       } else {
         fmt.Println("Error uploading: " + path)
+        w.WriteHeader(http.StatusInternalServerError)
       }
     }
 
@@ -38,18 +36,6 @@ func main() {
     if r.Method == "DELETE" {
       rm_file(AUTH, DL_URL, path)
       fmt.Println("Deleted: " + path)
-      did_something = true
-    }
-
-    // Just ignore HEADs
-    if r.Method == "HEAD" {
-      did_something = true
-    }
-
-    // Make sure something was done
-    if !did_something {
-      w.WriteHeader(http.StatusInternalServerError)
-      w.Write([]byte("error"))
     }
 
   })
