@@ -34,8 +34,14 @@ func main() {
 
     // Delete a file
     if r.Method == "DELETE" {
-      rm_file(AUTH, DL_URL, path)
-      fmt.Println("Deleted: " + path)
+      status := rm_file(AUTH, DL_URL, path)
+
+      if status == 200 {
+        fmt.Println("Deleted: " + path)
+      } else {
+        fmt.Println("Failed to delete: " + path)
+        w.WriteHeader(http.StatusInternalServerError)
+      }
     }
 
   })
