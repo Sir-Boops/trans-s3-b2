@@ -2,7 +2,6 @@ package main
 
 import "os"
 import "fmt"
-import "strings"
 import "net/http"
 import "io/ioutil"
 
@@ -13,7 +12,7 @@ func main() {
 	// Arg 3 = bucket
 	// Arg 4 is IP
 
-	BucketID, API_URL, AUTH := get_keys(os.Args[1], os.Args[2])
+	BucketID, API_URL, AUTH := b2_auth(os.Args[1], os.Args[2])
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		bodyBytes, _ := ioutil.ReadAll(r.Body)
@@ -28,16 +27,11 @@ func main() {
 				}
 			} else {
 				// Normal upload
-				content_type := r.Header["Content-Type"][0]
-				UAUTH, UURL := upload_url(BucketID, API_URL, AUTH)
-				status := upload_file(UAUTH, UURL, path, content_type, bodyBytes, os.Args[3], "")
-
-				if status == 200 {
-					fmt.Println("Uploaded: " + path)
-				} else {
-					fmt.Println("Error uploading: " + path)
-					w.WriteHeader(http.StatusInternalServerError)
-				}
+				uuid := save_file(bodyBytes)
+				UAUTH, UURL := b2_upload_url(BucketID, API_URL, AUTH)
+				b2_upload(UAUTH, UURL, path, os.Args[3], uuid)
+				fmt.Println("Uploaded: " + path)
+				w.WriteHeader(http.StatusOK)
 			}
 		}
 
@@ -46,18 +40,11 @@ func main() {
 
 			if len(r.URL.Query()["uploadId"]) > 0 {
 				finish_multi_part(r.URL.Query()["uploadId"][0], path)
-				UAUTH, UURL := upload_url(BucketID, API_URL, AUTH)
-				status := upload_file(UAUTH, UURL, strings.Split(path, "?")[0], "b2/x-auto", make([]byte, 0), os.Args[3], r.URL.Query()["uploadId"][0])
-				if status == 200 {
-					fmt.Println("Uploaded Multipart: " + path)
-				} else {
-					fmt.Println("Error uploading Multipart: " + path)
-					w.WriteHeader(http.StatusInternalServerError)
-				}
+				//UAUTH, UURL := b2_upload_url(BucketID, API_URL, AUTH)
+				//status := b2_upload(UAUTH, UURL, strings.Split(path, "?")[0], "b2/x-auto", make([]byte, 0), os.Args[3], r.URL.Query()["uploadId"][0])
 			} else {
-				UUID := start_multi_part()
-				ans := gen_xml_multi(UUID)
-				w.Write([]byte(ans))
+				//ans := gen_xml_multi(UUID)
+				//w.Write([]byte(ans))
 			}
 		}
 

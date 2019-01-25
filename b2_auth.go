@@ -16,7 +16,7 @@ type Base struct {
   DLURL string `json:"downloadUrl"`
 }
 
-func get_keys(id string, key string) (string, string, string) {
+func b2_auth(id string, key string) (string, string, string) {
 
   // Create custom client
   client := &http.Client{}

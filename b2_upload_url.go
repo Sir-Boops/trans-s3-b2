@@ -10,7 +10,7 @@ type Main struct {
   UURL string `json:"uploadUrl"`
 }
 
-func upload_url(BUCKETID string, API_URL string, AUTH string) (string, string) {
+func b2_upload_url(BUCKETID string, API_URL string, AUTH string) (string, string) {
 
   // Create custom client
   client := &http.Client{}
