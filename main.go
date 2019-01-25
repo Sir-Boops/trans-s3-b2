@@ -50,14 +50,8 @@ func main() {
 
 		// Delete a file
 		if r.Method == "DELETE" {
-			status := rm_file(AUTH, API_URL, path, BucketID, os.Args[3])
-
-			if status == 200 || status == 400 || status == 404 {
-				fmt.Println("Deleted: " + path)
-			} else {
-				fmt.Println("Failed to delete: " + path)
-				w.WriteHeader(http.StatusInternalServerError)
-			}
+			b2_delete_file(AUTH, API_URL, path, BucketID, os.Args[3])
+			fmt.Println("Deleted: " + path)
 		}
 
 		// Send an empty HEAD
