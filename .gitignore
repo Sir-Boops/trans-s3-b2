@@ -1,1 +1,2 @@
-trans-s3-b2*
+node_modules
+package-lock.json
