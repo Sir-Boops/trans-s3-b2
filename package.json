@@ -1,0 +1,8 @@
+{
+	"dependencies": {
+		"express": "^4.16.4",
+		"raw-body": "^2.3.3",
+		"request": "^2.88.0",
+		"sqlite3": "^4.0.6"
+	}
+}

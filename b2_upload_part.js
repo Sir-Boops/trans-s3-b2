@@ -3,7 +3,7 @@ const crypto = require('crypto')
 const fs = require('fs')
 
 module.exports = {
-	b2_upload_part: function (auth, query, data, cb) {
+	b2_upload_part: function (auth, query, data, db, cb) {
 		get_part_upload_url(auth, query.uploadId, function(upload_body){
 
 			const options = {
@@ -17,8 +17,9 @@ module.exports = {
 			}
 
 			request.post(options, function(err, res, body){
-				// Write hash to a file
-				fs.writeFileSync(body.fileId + '_' + body.partNumber, body.contentSha1)
+				if(res.statusCode == 200){
+					db.run('INSERT INTO hashes (id,hash) VALUES (?,?)', [(JSON.parse(body).fileId + "_" + query.partNumber), JSON.parse(body).contentSha1])
+				}
 				cb(res.statusCode)
 			})
 		})
