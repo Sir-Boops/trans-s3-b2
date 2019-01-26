@@ -23,12 +23,9 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT)', function(err){
 
 		// Handle PUT requests
 		app.put("/*", function(req, res){
-			console.log(res.query)
 			getRawBody(req, function(err, data){
 				if(data !== undefined) {
 					if(req.query.uploadId !== undefined && req.query.partNumber !== undefined) {
-						res.status(200)
-						res.send()
 						//Large part file upload
 						b2_upload_part.b2_upload_part(auth, req.query, data, db, function(code){
 							if(code == 200){
@@ -87,7 +84,7 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT)', function(err){
 				// Finish a large upload
 				//console.log(req.query)
 				res.status(500)
-				res.send(ans)
+				res.send()
 			}
 		})
 
