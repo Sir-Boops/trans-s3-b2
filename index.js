@@ -48,16 +48,8 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 				} else {
 					if(req.query.uploadId !== undefined && req.query.partNumber !== undefined){
 						// If it's checking?
-						db.all('SELECT hash FROM hashes WHERE id LIKE ?', [req.query.uploadId + "_" + req.query.partNumber], function(err, rows){
-							console.log(rows)
-							if(rows.hash !== undefined){
-								res.status(200)
-								res.send()
-							} else {
-								res.status(500)
-								res.send()
-							}
-						})
+						res.status(200)
+						res.send()
 					}
 				}
 			})
