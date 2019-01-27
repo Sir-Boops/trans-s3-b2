@@ -31,13 +31,11 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 						b2_upload_part.b2_upload_part(auth, req.query, data, db, function(code){
 							if(code == 200){
 								console.log('Uploaded a part of a large file!')
-								res.status(200)
-								res.send()
 							} else {
 								console.log('non 200 code when uploading part of a large file')
-								res.status(code)
-								res.send()
 							}
+							res.status(code)
+							res.send()
 						})
 					} else {
 						// Normal small file upload
@@ -74,16 +72,16 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 			if(req.query.uploads !== undefined) {
 				// Start a new large upload
 				b2_start_large_upload.b2_start_large_upload(auth, req.path, function(code, body){
+					res.status(code)
 					if(code == 200) {
 						console.log('Starting multi-part upload: ' + body.fileId)
 						const ans = '<?xml version="1.0" encoding="UTF-8"?>' +
 						'<InitiateMultipartUploadResult xmlns="http://s3.amazonaws.com/doc/2006-03-01/">' +
 						'"<UploadId>' + body.fileId + '</UploadId>"' +
 						'</InitiateMultipartUploadResult>'
-						res.status(200)
 						res.send(ans)
 					} else {
-						res.status(code)
+						res.send()
 					}
 				})
 			} else {
