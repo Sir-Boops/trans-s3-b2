@@ -1,3 +1,5 @@
+const request = require('request')
+
 module.exports = {
 	b2_finish_large_file: function(auth, uploadId, db, cb) {
 		gen_list(db, uploadId, function(list){
