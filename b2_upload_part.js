@@ -18,7 +18,11 @@ module.exports = {
 
 			request.post(options, function(err, res, body){
 				if(res.statusCode == 200){
-					db.run('INSERT INTO hashes (id,hash) VALUES (?,?)', [(JSON.parse(body).fileId + "_" + query.partNumber), JSON.parse(body).contentSha1])
+					db.all('SELECT hash FROM hashes WHERE hash LIKE ?', [JSON.parse(body).contentSha1], function(err, row){
+						if(row.length == 0){
+							db.run('INSERT INTO hashes (id,hash,part) VALUES (?,?,?)', [JSON.parse(body).fileId, JSON.parse(body).contentSha1, query.partNumber])
+						}
+					})
 				}
 				cb(res.statusCode)
 			})

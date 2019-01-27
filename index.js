@@ -6,13 +6,14 @@ const b2_upload = require('./b2_upload')
 const b2_delete = require('./b2_delete')
 const b2_start_large_upload = require('./b2_start_large_upload')
 const b2_upload_part = require('./b2_upload_part')
+const b2_finish_large_file = require('./b2_finish_large_file')
 
 const app = express();
 let db = new sqlite3.Database(':memory:');
 
 // Create the multi-part in memory DB
 console.log('Starting DB')
-db.run('CREATE TABLE hashes (id TEXT, hash TEXT)', function(err){
+db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 	console.log('DB started')
 	// Auth to b2
 	console.log("Logging into Backblaze")
@@ -64,7 +65,6 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT)', function(err){
 
 		// Handle POST requests
 		app.post("/*", function(req, res){
-			console.log(req.query)
 			if(req.query.uploads !== undefined) {
 				// Start a new large upload
 				b2_start_large_upload.b2_start_large_upload(auth, req.path, function(code, body){
@@ -81,10 +81,11 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT)', function(err){
 					}
 				})
 			} else {
-				// Finish a large upload
-				//console.log(req.query)
-				res.status(500)
-				res.send()
+				// Finish large file upload
+				b2_finish_large_file.b2_finish_large_file(auth, req.query.uploadId, db, function(status){
+					res.status(status)
+					res.send()
+				})
 			}
 		})
 
