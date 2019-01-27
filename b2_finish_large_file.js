@@ -9,7 +9,7 @@ module.exports = {
 				headers: {
 					Authorization: auth.auth
 				},
-				body: '{"fileId":"' + uploadId + '", ' + list + '}'
+				body: '{"fileId":"' + uploadId + '", "partSha1Array":' + list + '}'
 			}
 
 			request.post(options, function(err, res, body){
