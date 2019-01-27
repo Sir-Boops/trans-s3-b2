@@ -60,7 +60,7 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 								res.status(200)
 								res.send()
 							} else {
-								res.status(500)
+								res.status(404)
 								res.send()
 							}
 						})
