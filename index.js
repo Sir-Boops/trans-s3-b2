@@ -65,6 +65,7 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 
 		// Handle POST requests
 		app.post("/*", function(req, res){
+			console.log(req.query)
 			if(req.query.uploads !== undefined) {
 				// Start a new large upload
 				b2_start_large_upload.b2_start_large_upload(auth, req.path, function(code, body){
