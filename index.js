@@ -89,6 +89,7 @@ db.run('CREATE TABLE hashes (id TEXT, hash TEXT, part INT)', function(err){
 			} else {
 				// Finish large file upload
 				b2_finish_large_file.b2_finish_large_file(auth, req.query.uploadId, db, function(status){
+					console.log('Fished multi part upload: ' + req.query.uploadId)
 					res.status(status)
 					res.send()
 				})

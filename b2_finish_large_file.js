@@ -9,7 +9,7 @@ module.exports = {
 				headers: {
 					Authorization: auth.auth
 				},
-				body: '{"fildId":"' + uploadId + '", ' + list + '}'
+				body: '{"fileId":"' + uploadId + '", ' + list + '}'
 			}
 
 			request.post(options, function(err, res, body){
