@@ -13,7 +13,6 @@ module.exports = {
 			}
 
 			request.post(options, function(err, res, body){
-				console.log(body)
 				cb(res.statusCode)
 			})
 		})
